@@ -1,0 +1,16 @@
+version: "3"
+services:
+  #build:
+  #  context: .
+  ubuntu-mate-rdp:
+    image: ubuntu-mate-rdp
+    restart: unless-stopped
+    hostname: mate
+    network_mode: bridge
+    privileged: true
+    ports:
+      - "3389:3389"
+      - "9002:9001"
+    volumes:
+      - "/shares/ubuntu-mate-rdp/home:/home"
+      - "/etc/localtime:/etc/localtime:ro"
