@@ -13,4 +13,5 @@ services:
       - "9002:9001"
     volumes:
       - "~/ubuntu-mate-rdp/home:/home"
-      #- "/etc/localtime:/etc/localtime:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "~/ubuntu-mate-rdp/sss:/var/lib/sss"
