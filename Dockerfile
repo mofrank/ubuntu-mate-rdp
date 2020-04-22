@@ -19,6 +19,7 @@ RUN apt-get install -y supervisor
 RUN apt-get install -y xrdp
 RUN apt-get install -y xrdp-pulseaudio-installer
 
+# Add common packages
 RUN apt-get install -y wget \
                         net-tools \
                         sudo \
@@ -30,11 +31,10 @@ RUN apt-get install -y wget \
                         bash-completion \
                         postfix \
                         dstat \
-                        python-pip \
-                        python-dev \
-                        python3-pip \
-                        python3-dev \                        
-                        sasl2-bin \
+                        vim
+
+# Add SSSD Packages
+RUN apt-get install -y sasl2-bin \
                         libsasl2-modules-ldap \
                         realmd \
                         sssd \
@@ -46,9 +46,27 @@ RUN apt-get install -y wget \
                         samba-common-bin \
                         packagekit
 
-ADD xrdp.conf /etc/supervisor/conf.d/xrdp.conf
+# Add developer packages                        
+RUN apt-get install -y npm \
+                        python-pip \
+                        python-dev \
+                        python3-pip \
+                        python3-dev
 
+ADD xrdp.conf /etc/supervisor/conf.d/xrdp.conf
+ADD sss.conf /etc/supervisor/conf.d/sssd.conf
+
+# Add default ubuntu users to sudoers.d
 ADD 00-ubuntu /etc/sudoers.d/00-ubuntu
+
+# Add krb5 and sssd configurations
+ADD krb5.conf /etc/krb5.conf
+ADD sssd.conf /etc/sssd/sssd.conf
+ADD nsswitch.conf /etc/nsswitch.conf
+RUN chmod 600 /etc/sssd/sssd.conf && \
+    mkdir -p /var/lib/sss/db && \
+    mkdir -p /var/lib/sss/pipes/private && \
+    mkdir -p /var/lib/sss/mc
 
 #rdp port
 EXPOSE 3389
