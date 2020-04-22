@@ -19,7 +19,36 @@ RUN apt-get install -y supervisor
 RUN apt-get install -y xrdp
 RUN apt-get install -y xrdp-pulseaudio-installer
 
+RUN apt-get install -y wget \
+                        net-tools \
+                        sudo \
+                        curl \
+                        autofs \
+                        iotop \
+                        iftop \
+                        nano \
+                        bash-completion \
+                        postfix \
+                        dstat \
+                        python-pip \
+                        python-dev \
+                        python3-pip \
+                        python3-dev \                        
+                        sasl2-bin \
+                        libsasl2-modules-ldap \
+                        realmd \
+                        sssd \
+                        sssd-tools \
+                        libnss-sss \
+                        libpam-sss \
+                        krb5-user \
+                        adcli \
+                        samba-common-bin \
+                        packagekit
+
 ADD xrdp.conf /etc/supervisor/conf.d/xrdp.conf
+
+ADD 00-ubuntu /etc/sudoers.d/00-ubuntu
 
 #rdp port
 EXPOSE 3389
@@ -53,7 +82,5 @@ RUN useradd -ms /bin/bash ubuntu && \
     echo ubuntu:password|chpasswd
 
 RUN echo "session optional			pam_mkhomedir.so" >> /etc/pam.d/common-session
-
-RUN apt-get install net-tools 
 
 #docker run  -p 3389:3389 -p 9001:9001 --name=ubuntu-desktop ubuntu-desktop
