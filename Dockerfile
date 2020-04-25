@@ -5,6 +5,7 @@ RUN apt-get update -y && \
     apt-get install -y software-properties-common
 
 RUN add-apt-repository -y ppa:d042888-2/xrdp-0.9.9 && \
+    add-apt-repository -y ppa:webupd8team/atom && \
     apt-get update -y && \
     apt full-upgrade -y && \
     apt-get dist-upgrade -y
@@ -22,8 +23,9 @@ RUN apt-get install -y supervisor
 RUN apt-get install -y xrdp \
                         xrdp-pulseaudio-installer
 
-# Add common packages
+# Add common utility packages
 RUN apt-get install -y firefox \
+                        atom \
                         wget \
                         net-tools \
                         sudo \
@@ -49,12 +51,6 @@ RUN sed -i '/TerminalServerUsers/d' /etc/xrdp/sesman.ini && \
 RUN xrdp-keygen xrdp auto
 
 CMD ["/usr/bin/supervisord", "-n"]
-
-RUN add-apt-repository -y ppa:webupd8team/atom && \
-    apt-get update -y && \
-    apt full-upgrade -y && \
-    apt-get -y dist-upgrade && \
-    apt-get -y install atom wget
 
 RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - && \
     apt-get -y install libxss1 libappindicator1 libindicator7 && \
